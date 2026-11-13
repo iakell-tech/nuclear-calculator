@@ -5,7 +5,7 @@ from bakery import assert_equal
 
 
 # Global constants
-hours_per_year = 8760
+hours_per_year = 9000
 default_household_consumption = 10500
 
 reactor_types = [
@@ -126,27 +126,19 @@ def power_calculator(state: State) -> Page:
 
 
 @route
-def calculate_power(state: State,
-                    electrical_power: float,
-                    thermal_power: float,
-                    capacity_factor: float) -> Page:
-    """Validate inputs and calculate reactor performance."""
-
+def calculate_power(state: State, electrical_power: float, thermal_power: float, capacity_factor: float) -> Page:
+    """this function checks for inputs that are valid for calculations"""
     # Check that power inputs are positive
     if electrical_power <= 0 or thermal_power <= 0:
         return error_page(state, "Electrical and thermal power must be positive numbers.")
-
     # Check that capacity factor is valid
     if capacity_factor < 0 or capacity_factor > 100:
         return error_page(state, "Capacity factor must be between 0% and 100%.")
-
     # Calculate efficiency
     efficiency = calculate_efficiency(electrical_power, thermal_power)
-
     # Check that efficiency is valid
     if efficiency <= 0 or efficiency > 100:
         return error_page(state,"Efficiency must be greater than 0% and no greater than 100%.")
-
     # Update the State attributes
     state.electrical_power = electrical_power
     state.thermal_power = thermal_power
@@ -212,10 +204,7 @@ def update_capacity_factor(state: State,
 
     return annual_energy(state)
 
-
-# --------------------------------------------------
-# ROUTE 4: ANNUAL ENERGY
-# --------------------------------------------------
+# Route 4: calculate annual energy
 
 @route
 def annual_energy(state: State) -> Page:
@@ -235,10 +224,7 @@ def annual_energy(state: State) -> Page:
     content.extend(navigation())
     return Page(state, content)
 
-
-# --------------------------------------------------
-# ROUTE 5: HOMES POWERED
-# --------------------------------------------------
+# Route 5: calculate homes powered
 
 @route
 def homes_powered(state: State) -> Page:

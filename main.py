@@ -429,6 +429,25 @@ def simulate_scenario(state: State,
     content.extend(navigation())
     return Page(state, content)
 
+
+# Unit test
+
+assert_equal(
+    round(calculate_efficiency(1000, 3000), 2),
+    33.33
+)
+
+assert_equal(
+    calculate_annual_energy(1000, 90),
+    7884000
+)
+
+assert_equal(
+    round(calculate_homes(7884000, 10500)),
+    750857
+)
+
+
 # Website start
 
 start_server(
